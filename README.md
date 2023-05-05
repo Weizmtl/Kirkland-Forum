@@ -16,7 +16,6 @@ npm install
 ```sh
 npm run dev
 ```
-
 ### Compile and Minify for Production
 
 ```sh
@@ -28,3 +27,6 @@ npm run build
 ```sh
 npm run test:unit
 ```
+
+May 5th:
+complete the framework of navigation bar.

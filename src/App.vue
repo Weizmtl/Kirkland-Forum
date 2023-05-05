@@ -1,7 +1,5 @@
 <template>
-  <el-button type="primary">button</el-button>
-
-  
+  <router-view/>
 </template>
 
 <script setup>
