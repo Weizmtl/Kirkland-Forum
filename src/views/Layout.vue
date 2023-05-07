@@ -14,21 +14,24 @@
                 </div>
                 <!-- login and register panel -->
                 <div class="user-info-panel">
-                    <el-button type="primary" class="op-btn">
-                        Post<span class="=iconfont icon-add"></span>
-                    </el-button>
-                    <el-button type="primary" calss="op-btn">
-                        Search<span class="=iconfont icon-search"></span>
-                    </el-button>
+                    <div class="op-btn">
+                        <el-button type="primary" class="op-btn">
+                            Post<span class="=iconfont icon-add"></span>
+                        </el-button>
+                        <el-button type="primary" calss="op-btn">
+                            Search<span class="= iconfont icon-search"></span>
+                        </el-button>
+                    </div>
                     <el-button-group :style="{ 'margin-left': '10px' }">
-                        <el-button type="primary" plain>SignIn</el-button>
-                        <el-button type="primary" plain>SignUp</el-button>
+                        <el-button type="primary" plain>Login</el-button>
+                        <el-button type="primary" plain>Register</el-button>
                     </el-button-group>
                 </div>
             </div>
         </div>
-        <div>
-            <router-view />
+        <div :style="{height: '1500px'}">
+            <div></div>
+            <!-- <router-view /> -->
         </div>
     </div>
 </template>
@@ -39,6 +42,7 @@ import { useRouter, useRoute } from "vue-router";
 const { proxy } = getCurrentInstance();
 const router = useRouter();
 const route = useRoute();
+
 const logoInfo = ref([
     {
         letter: "K",
@@ -85,29 +89,26 @@ const getScrollTop = () => {
     return scrollTop;
 };
 
-const initScroll = () =>{
-    window.addEventListener("scroll", () =>{
+const initScroll = () => {
+    window.addEventListener("scroll", () => {
         let currentScrollTop = getScrollTop();
-        if(currentScrollTop>initScrollTop){
+        if (currentScrollTop > initScrollTop) {
             // scroll down
-            scrollType =1;
-        }else{
+            scrollType = 1;
+        } else {
             scrollType = 0;
         }
         initScrollTop = currentScrollTop;
         console.log(currentScrollTop);
-        if (scrollType ==1&& currentScrollTop >100){
-            showHeader.value=false;
-        }else{
-            showHeader.value=true;
+        if (scrollType == 1 && currentScrollTop > 100) {
+            showHeader.value = false;
+        } else {
+            showHeader.value = true;
         }
-        
+
     });
 };
 
-onMounted(() => {
-    initScroll();
-});
 
 </script>
 
@@ -139,7 +140,7 @@ onMounted(() => {
         }
 
         .user-info-panel {
-            width: 330px;
+            width: 340px;
             display: flex;
 
             .op-btn {
@@ -151,7 +152,6 @@ onMounted(() => {
                     margin-left: 5px;
                 }
             }
-
         }
     }
 }
