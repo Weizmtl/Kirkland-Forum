@@ -16,7 +16,7 @@
                 <div class="user-info-panel">
                     <div class="op-btn">
                         <el-button type="primary" class="op-btn">
-                            Post<span class="=iconfont icon-add"></span>
+                            Post<span class="= iconfont icon-add"></span>
                         </el-button>
                         <el-button type="primary" calss="op-btn">
                             Search<span class="= iconfont icon-search"></span>
