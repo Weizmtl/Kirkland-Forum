@@ -1,18 +1,36 @@
 <template>
     <div>
-        <div class="header">
+        <div class="header" v-if="showHeader">
             <div class="header-content" :style="{ width: proxy.globalInfo.bodyWidth + 'px' }">
-            
-            <div class="logo">
-                <span v-for="item in logoInfo" :style="{ color: item.color }">{{ item.letter }}
-                </span>
+                <!-- logo -->
+                <router-link to="/" class="logo">
+                    <span v-for="item in logoInfo" :style="{ color: item.color }">{{ item.letter }}
+                    </span>
+                </router-link>
+                <!-- subsection panel -->
+                <div class="menu-panel">
+
+
+                </div>
+                <!-- login and register panel -->
+                <div class="user-info-panel">
+                    <el-button type="primary" class="op-btn">
+                        Post<span class="=iconfont icon-add"></span>
+                    </el-button>
+                    <el-button type="primary" calss="op-btn">
+                        Search<span class="=iconfont icon-search"></span>
+                    </el-button>
+                    <el-button-group :style="{ 'margin-left': '10px' }">
+                        <el-button type="primary" plain>SignIn</el-button>
+                        <el-button type="primary" plain>SignUp</el-button>
+                    </el-button-group>
+                </div>
             </div>
         </div>
+        <div>
+            <router-view />
+        </div>
     </div>
-    <div>
-        <router-view />
-    </div>
-</div>
 </template>
 
 <script setup>
@@ -24,37 +42,73 @@ const route = useRoute();
 const logoInfo = ref([
     {
         letter: "K",
-        color: "red",
+        color: "#3285FF",
     },
     {
         letter: "i",
-        color: "red",
+        color: "#FB3624",
     },
     {
         letter: "r",
-        color: "red",
+        color: "#FFBA02",
     },
     {
         letter: "k",
-        color: "red",
+        color: "#3285FF",
     },
     {
         letter: "l",
-        color: "red",
+        color: "#FB3624",
     },
     {
         letter: "a",
-        color: "red",
+        color: "#FFBA02",
     },
     {
         letter: "n",
-        color: "red",
+        color: "#3285FF",
     },
     {
         letter: "d",
-        color: "red",
+        color: "#FB3624",
     },
 ]);
+
+const showHeader = ref(true);
+
+//get the height of the scrollbar
+const getScrollTop = () => {
+    let scrollTop =
+        document.documentElement.getScrollTop ||
+        window.pageYOffset ||
+        document.body.scrollTop;
+    return scrollTop;
+};
+
+const initScroll = () =>{
+    window.addEventListener("scroll", () =>{
+        let currentScrollTop = getScrollTop();
+        if(currentScrollTop>initScrollTop){
+            // scroll down
+            scrollType =1;
+        }else{
+            scrollType = 0;
+        }
+        initScrollTop = currentScrollTop;
+        console.log(currentScrollTop);
+        if (scrollType ==1&& currentScrollTop >100){
+            showHeader.value=false;
+        }else{
+            showHeader.value=true;
+        }
+        
+    });
+};
+
+onMounted(() => {
+    initScroll();
+});
+
 </script>
 
 <style lang="scss">
@@ -70,7 +124,35 @@ const logoInfo = ref([
         display: flex;
         align-items: center;
 
-        .logo {}
+        .logo {
+            display: block;
+            text-decoration: none;
+            margin-right: 5px;
+
+            span {
+                font-size: 35px;
+            }
+        }
+
+        .menu-panel {
+            flex: 1;
+        }
+
+        .user-info-panel {
+            width: 330px;
+            display: flex;
+
+            .op-btn {
+                .iconfont {
+                    margin-left: 5px;
+                }
+
+                .el-button+.el-button {
+                    margin-left: 5px;
+                }
+            }
+
+        }
     }
 }
 </style>
