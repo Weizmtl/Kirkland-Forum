@@ -16,28 +16,30 @@
                 <div class="user-info-panel">
                     <div class="op-btn">
                         <el-button type="primary" class="op-btn">
-                            Post<span class="=iconfont icon-add"></span>
+                            Post<span class="= iconfont icon-add"></span>
                         </el-button>
                         <el-button type="primary" calss="op-btn">
                             Search<span class="= iconfont icon-search"></span>
                         </el-button>
                     </div>
                     <el-button-group :style="{ 'margin-left': '10px' }">
-                        <el-button type="primary" plain>Login</el-button>
+                        <el-button type="primary" plain @click="login">Login</el-button>
                         <el-button type="primary" plain>Register</el-button>
                     </el-button-group>
                 </div>
             </div>
         </div>
-        <div :style="{height: '1500px'}">
-            <div></div>
-            <!-- <router-view /> -->
+        <Dialog :show="showDialog" :buttons="buttons" @close="showDialog = false">
+           <div>this is content</div> 
+        </Dialog>
+        <div>
+            <router-view />
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref, reactive, getCurrentInstance } from "vue";
+import { ref, reactive, getCurrentInstance, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 const { proxy } = getCurrentInstance();
 const router = useRouter();
@@ -90,6 +92,7 @@ const getScrollTop = () => {
 };
 
 const initScroll = () => {
+    let initScrollTop = getScrollTop();
     window.addEventListener("scroll", () => {
         let currentScrollTop = getScrollTop();
         if (currentScrollTop > initScrollTop) {
@@ -105,11 +108,24 @@ const initScroll = () => {
         } else {
             showHeader.value = true;
         }
-
     });
 };
 
+const showDialog = ref(true);
 
+const buttons = [{
+    text: "Comfirm",
+    type: "primary",
+},
+];
+
+const login = () =>{
+    showDialog.value = true;
+};
+
+onMounted(() => {
+    initScroll();
+});
 </script>
 
 <style lang="scss">
@@ -140,7 +156,7 @@ const initScroll = () => {
         }
 
         .user-info-panel {
-            width: 340px;
+            width: 345px;
             display: flex;
 
             .op-btn {
