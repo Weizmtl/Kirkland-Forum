@@ -28,11 +28,21 @@
                                 <span class="iconfont icon-checkcode"></span>
                             </template>
                         </el-input>
-                        <img :src="checkCodeUrl" class="check-code" @click="changeCheckCode(0)"/>
+                        <img :src="checkCodeUrl" class="check-code" @click="changeCheckCode(0)" />
                     </div>
-
                 </el-form-item>
-
+                <el-form-item>
+                    <div class="rememberme-panel">
+                        <el-checkbox v-model="formData.rememberMe">Remember</el-checkbox>
+                    </div>
+                    <div class="no-account">
+                        <a href="javascript:void(0)" class="a-link">Forgot password?</a>
+                        <a href="javascript:void(0)" class="a-link">Need an account?</a>
+                    </div>
+                </el-form-item>
+                <el-form-item>
+                  <el-button type="primary" class="op-btn">Log in</el-button>
+                </el-form-item>
             </el-form>
         </Dialog>
     </div>
@@ -62,8 +72,8 @@ defineExpose({ showPanel });
 //Verification
 const checkCodeUrl = ref(api.checkCode);
 
-const changeCheckCode = (type) =>{
-    checkCodeUrl.value = api.checkCode+"?type="+type+"&time="+new Date().getTime();
+const changeCheckCode = (type) => {
+    checkCodeUrl.value = api.checkCode + "?type=" + type + "&time=" + new Date().getTime();
 }
 
 const dialogConfig = reactive({
@@ -81,15 +91,25 @@ const rules = {
 </script>
 
 <style lang="scss">
-.login-register{
-    .check-code-panel{
+.login-register {
+    .check-code-panel {
         display: flex;
-        .check-code{
-            margin-left:5px;
+
+        .check-code {
+            margin-left: 5px;
             cursor: pointer;
         }
+    }
+    .rememberme-panel{
+        width: 100%;
+    }
+    .no-account{
+        width:100%;
+        display: flex;
+        justify-content: space-between;
+    }
+    .op-btn{
+        width: 100%;
+    }
 }
-}
-
-
 </style>

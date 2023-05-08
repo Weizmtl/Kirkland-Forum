@@ -18,7 +18,17 @@
   background: #bfbfbf;
 }
 
+:root{
+  --link:#409eff
+}
+
+
 body {
   margin:0px;
   padding:0px;
+}
+
+.a-link{
+  text-decoration: none;
+  color: var(--link)
 }

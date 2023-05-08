@@ -36,3 +36,4 @@ Encapsulate Dialog frameworks.
 May 8th:
 login dialog completed
 create the API notes
+completed login dialog
