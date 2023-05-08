@@ -23,22 +23,24 @@
                         </el-button>
                     </div>
                     <el-button-group :style="{ 'margin-left': '10px' }">
-                        <el-button type="primary" plain @click="login">Login</el-button>
-                        <el-button type="primary" plain>Register</el-button>
+                        <el-button type="primary" plain @click="LoginAndRegister(1)"
+                        >Login</el-button>
+                        <el-button type="primary" plain @click="LoginAndRegister(0)"
+                        >Register</el-button>
                     </el-button-group>
                 </div>
             </div>
         </div>
-        <Dialog :show="showDialog" :buttons="buttons" @close="showDialog = false">
-           <div>this is content</div> 
-        </Dialog>
         <div>
             <router-view />
         </div>
+        <!-- login and register -->
+        <LoginAndRegister ref="loginRegisterRef"></LoginAndRegister>
     </div>
 </template>
 
 <script setup>
+import LoginAndRegister from "./LoginAndRegister.vue";
 import { ref, reactive, getCurrentInstance, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 const { proxy } = getCurrentInstance();
@@ -111,16 +113,10 @@ const initScroll = () => {
     });
 };
 
-const showDialog = ref(true);
-
-const buttons = [{
-    text: "Comfirm",
-    type: "primary",
-},
-];
-
-const login = () =>{
-    showDialog.value = true;
+//login and register
+const loginRegisterRef = ref();
+const loginAndRegister = (type) =>{
+loginRegisterRef.value.showPanel(type);
 };
 
 onMounted(() => {
