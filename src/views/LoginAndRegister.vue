@@ -5,15 +5,51 @@
             <el-form class="login-register" :model="formData" :rules="rules" ref="formDataRef">
                 <!--input-->
                 <el-form-item prop="email">
-                    <el-input size="large" clearable placeholder="please input your email" v-model="formData.email">
+                    <el-input 
+                    size="large" 
+                    clearable 
+                    placeholder="please input your email" 
+                    v-model="formData.email">
+                    <template #prefix>
+                        <span class="iconfont icon-email"></span>
+                    </template>
+                    </el-input>
+                </el-form-item>
+
+                <el-form-item prop="checkCode">
+                    <div class="send-email-panel">
+                        <el-input size="large" clearable placeholder="input verification code"
+                            v-model="formData.checkCode">
+                            <template #prefix>
+                                <span class="iconfont icon-checkcode"></span>
+                            </template>
+                        </el-input>
+                        <el-button class="sent-mail-btn" type="primary" size="large">Get code</el-button>
+                    </div>
+                </el-form-item>
+
+                <el-form-item prop="nickName">
+                    <el-input 
+                    size="large" 
+                    clearable 
+                    placeholder="please input nickname" 
+                    v-model="formData.nickName">
+                    <template #prefix>
+                        <span class="iconfont icon-account"></span>
+                    </template>
+                    </el-input>
+                </el-form-item>
+
+                <el-form-item prop="password">
+                    <el-input size="large" clearable placeholder="please input your password" v-model="formData.password">
                         <template #prefix>
-                            <span class="iconfont icon-account"></span>
+                            <span class="iconfont icon-password"></span>
                         </template>
                     </el-input>
                 </el-form-item>
 
-                <el-form-item prop="email">
-                    <el-input size="large" clearable placeholder="please input your password" v-model="formData.password">
+                <el-form-item prop="password">
+                    <el-input size="large" clearable placeholder="comfirm your password" v-model="formData.password">
                         <template #prefix>
                             <span class="iconfont icon-password"></span>
                         </template>
@@ -92,6 +128,15 @@ const rules = {
 
 <style lang="scss">
 .login-register {
+    .send-email-panel{
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        .sent-mail-btn{
+            margin-left: 5px;
+        }
+    }
+
     .check-code-panel {
         display: flex;
 
