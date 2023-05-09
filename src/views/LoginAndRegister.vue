@@ -39,7 +39,8 @@
                                     <span class="iconfont icon-checkcode"></span>
                                 </template>
                             </el-input>
-                            <el-button class="sent-mail-btn" type="primary" size="large">Get code</el-button>
+                            <el-button class="sent-mail-btn" type="primary" size="large" @click="showSendEmailDialog">Get
+                                code</el-button>
                         </div>
                         <el-popover placement="left" :width="450" trigger="click">
                             <div>
@@ -121,6 +122,31 @@
                 </el-form-item>
             </el-form>
         </Dialog>
+
+        <!-- dialog of send email code  -->
+        <Dialog :show="dialogConfig4SendMailCode.show" :title="dialogConfig4SendMailCode.title"
+            :buttons="dialogConfig4SendMailCode.buttons" width="500px" :showCancel="false"
+            @close="dialogConfig4SendMailCode.show = false">
+            <el-form :model="formData4SendMailCode" :rules="rules" ref="formData4SendMailCodeRef" label-width="100px">
+
+                <el-form-item label="Email">
+                    {{ formData.email }}
+
+                </el-form-item>
+                <!--input-->
+                <el-form-item label="Verification" prop="checkCode">
+                    <div class="check-code-panel">
+                        <el-input size="large" clearable placeholder="Please input verification code"
+                            v-model="formData4SendMailCode.checkCode">
+                            <template #prefix>
+                                <span class="iconfont icon-checkcode"></span>
+                            </template>
+                        </el-input>
+                        <img :src="checkCodeUrl4SendMailCode" class="check-code" @click="changeCheckCode(1)" />
+                    </div>
+                </el-form-item>
+            </el-form>
+        </Dialog>
     </div>
 </template>
 
@@ -148,9 +174,14 @@ defineExpose({ showPanel });
 
 //Verification
 const checkCodeUrl = ref(api.checkCode);
-
+const checkCodeUrl4SendMailCode = ref(api.checkCode);
 const changeCheckCode = (type) => {
-    checkCodeUrl.value = api.checkCode + "?type=" + type + "&time=" + new Date().getTime();
+    if (type == 0) {
+        checkCodeUrl.value = api.checkCode + "?type=" + type + "&time=" + new Date().getTime();
+    } else {
+        checkCodeUrl4SendMailCode.value = api.checkCode + "?type=" + type + "&time=" + new Date().getTime();
+    }
+
 };
 
 //Password display hidden operation
@@ -164,6 +195,51 @@ const eyeChange = (type) => {
     passwordEyeType[type] = !passwordEyeType[type];
 };
 
+// dialog of send email code
+const formData4SendMailCode = ref({});
+const formData4SendMailCodeRef = ref();
+
+const dialogConfig4SendMailCode = reactive({
+    show: false,
+    title: "Send email verification code",
+    buttons: [{
+        type: "primary",
+        text: "Send code",
+        click: () => {
+            sendEmailCode();
+        },
+    },
+    ],
+});
+
+const showSendEmailDialog = () => {
+    formDataRef.value.validateField("email", (valid) => {
+        if (!valid) {
+            return;
+        }
+        dialogConfig4SendMailCode.show = true;
+
+        nextTick(() => {
+            changeCheckCode(1);
+            formData4SendMailCodeRef.value.resetFields();
+            formData4SendMailCode.value = {
+                email: formData.value.email,
+            };
+        });
+    });
+};
+
+//send email
+const sendEmailCode = () => {
+    formData4SendMailCodeRef.value.validate((valid) => {
+        if (!valid) {
+            return;
+        }
+        console.log("ssss")
+    });
+};
+
+//dialog of login and register config
 const dialogConfig = reactive({
     show: false,
     title: "Title",
@@ -186,7 +262,7 @@ const rules = {
     emailCode: [{ required: true, message: "please input mail Code" }],
     nickName: [{ required: true, message: "please input Nickname" }],
     registerPassword: [{ required: true, message: "please input password" },
-    { validator: proxy.Verify.password, message: "1, password length 8-18, contain both letters and numbers."  },],
+    { validator: proxy.Verify.password, message: "1, password length 8-18, contain both letters and numbers." },],
     reRegisterPassword: [{ required: true, message: "please confirm your password" },
     { validator: checkRePassword, message: "The passwords entered do not match" }],
     checkCode: [{ required: true, message: "Please enter the image verification code" }],
@@ -221,15 +297,6 @@ const resetForm = () => {
         }
     }
 
-    .check-code-panel {
-        display: flex;
-
-        .check-code {
-            margin-left: 5px;
-            cursor: pointer;
-        }
-    }
-
     .rememberme-panel {
         width: 100%;
     }
@@ -242,6 +309,15 @@ const resetForm = () => {
 
     .op-btn {
         width: 100%;
+    }
+}
+
+.check-code-panel {
+    display: flex;
+
+    .check-code {
+        margin-left: 5px;
+        cursor: pointer;
     }
 }
 </style>
