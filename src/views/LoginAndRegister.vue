@@ -16,17 +16,23 @@
 
                 <!--Login Password-->
                 <el-form-item prop="password" v-if="opType == 1">
-                    <el-input size="large" clearable placeholder="please input your password" v-model="formData.password">
+                    <el-input :type="passwordEyeType.passwordEyeOpen ? 'text' : 'password'"
+                    size="large" placeholder="please input your password" v-model="formData.password">
                         <template #prefix>
                             <span class="iconfont icon-password"></span>
                         </template>
+                        <template #suffix>
+                            <span @click="eyeChange('passwordEyeOpen')"
+                                :class="['iconfont', passwordEyeType.passwordEyeOpen ? 'icon-eye' : 'icon-close-eye']"></span>
+                        </template>
                     </el-input>
                 </el-form-item>
+
                 <!--Register -->
-                <div v-if="opType == 0">
+                <div v-if="opType == 0 || opType == 2">
                     <el-form-item prop="emailCode">
                         <div class="send-email-panel">
-                            <el-input size="large" clearable placeholder="input verification code"
+                            <el-input size="large" clearable placeholder="input email verification code"
                                 v-model="formData.emailCode">
                                 <template #prefix>
                                     <span class="iconfont icon-checkcode"></span>
@@ -36,7 +42,7 @@
                         </div>
                     </el-form-item>
 
-                    <el-form-item prop="nickName">
+                    <el-form-item prop="nickName" v-if="opType == 0">
                         <el-input size="large" clearable placeholder="please input nickname" v-model="formData.nickName">
                             <template #prefix>
                                 <span class="iconfont icon-account"></span>
@@ -45,19 +51,28 @@
                     </el-form-item>
 
                     <el-form-item prop="registerPassword">
-                        <el-input size="large" clearable placeholder="please input your password"
+                        <el-input :type="passwordEyeType.registerPasswordEyeOpen ? 'text' : 'password'"
+                        size="large" placeholder="please input your password"
                             v-model="formData.registerPassword">
                             <template #prefix>
                                 <span class="iconfont icon-password"></span>
+                            </template>
+                            <template #suffix>
+                                <span @click="eyeChange('registerPasswordEyeOpen')"
+                                    :class="['iconfont', passwordEyeType.registerPasswordEyeOpen ? 'icon-eye' : 'icon-close-eye']"></span>
                             </template>
                         </el-input>
                     </el-form-item>
 
                     <el-form-item prop="reRegisterPassword">
-                        <el-input size="large" clearable placeholder="comfirm your password"
-                            v-model="formData.reRegisterPassword">
+                        <el-input :type="passwordEyeType.reRegisterPasswordEyeOpen ? 'text' : 'password'" size="large"
+                            placeholder="comfirm your password" v-model="formData.reRegisterPassword">
                             <template #prefix>
                                 <span class="iconfont icon-password"></span>
+                            </template>
+                            <template #suffix>
+                                <span @click="eyeChange('reRegisterPasswordEyeOpen')"
+                                    :class="['iconfont', passwordEyeType.reRegisterPasswordEyeOpen ? 'icon-eye' : 'icon-close-eye']"></span>
                             </template>
                         </el-input>
                     </el-form-item>
@@ -74,15 +89,23 @@
                         <img :src="checkCodeUrl" class="check-code" @click="changeCheckCode(0)" />
                     </div>
                 </el-form-item>
-                <el-form-item>
+                <el-form-item v-if="opType == 1">
                     <div class="rememberme-panel">
                         <el-checkbox v-model="formData.rememberMe">Remember me</el-checkbox>
                     </div>
                     <div class="no-account">
-                        <a href="javascript:void(0)" class="a-link">Forgot password?</a>
-                        <a href="javascript:void(0)" class="a-link">Need an account?</a>
+                        <a href="javascript:void(0)" class="a-link" @click="showPanel(2)">Forgot password?</a>
+                        <a href="javascript:void(0)" class="a-link" @click="showPanel(0)">Need an account?</a>
                     </div>
                 </el-form-item>
+                <el-form-item v-if="opType == 0">
+                    <a href="javascript:void(0)" class="a-link" @click="showPanel(1)">Already have an account?</a>
+                </el-form-item>
+
+                <el-form-item v-if="opType == 2">
+                    <a href="javascript:void(0)" class="a-link" @click="showPanel(1)">Sign in?</a>
+                </el-form-item>
+
                 <el-form-item>
                     <el-button type="primary" class="op-btn">Log in</el-button>
                 </el-form-item>
@@ -118,7 +141,18 @@ const checkCodeUrl = ref(api.checkCode);
 
 const changeCheckCode = (type) => {
     checkCodeUrl.value = api.checkCode + "?type=" + type + "&time=" + new Date().getTime();
-}
+};
+
+//Password display hidden operation
+const passwordEyeType = reactive({
+    passwordEyeOpen: false,
+    registerPasswordEyeOpen: false,
+    reRegisterPasswordEyeOpen: false,
+});
+
+const eyeChange = (type) => {
+    passwordEyeType[type] = !passwordEyeType[type];
+};
 
 const dialogConfig = reactive({
     show: false,

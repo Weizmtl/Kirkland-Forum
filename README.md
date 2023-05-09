@@ -40,3 +40,6 @@ login dialog completed
 create the API notes
 completed login and register dialog
 completed the sign in and sign up button logic.
+
+May 9th
+Optimization of registration and login
