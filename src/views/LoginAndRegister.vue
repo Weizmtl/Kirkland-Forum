@@ -16,8 +16,8 @@
 
                 <!--Login Password-->
                 <el-form-item prop="password" v-if="opType == 1">
-                    <el-input :type="passwordEyeType.passwordEyeOpen ? 'text' : 'password'"
-                    size="large" placeholder="please input your password" v-model="formData.password">
+                    <el-input :type="passwordEyeType.passwordEyeOpen ? 'text' : 'password'" size="large"
+                        placeholder="please input your password" v-model="formData.password">
                         <template #prefix>
                             <span class="iconfont icon-password"></span>
                         </template>
@@ -40,6 +40,15 @@
                             </el-input>
                             <el-button class="sent-mail-btn" type="primary" size="large">Get code</el-button>
                         </div>
+                        <el-popover placement="left" :width="450" trigger="click">
+                            <div>
+                                <p>1,Check your spam or junk email folder</p>
+                                <p>2,Add the email [5956882@qq.com] address to your whitelist</p>
+                            </div>
+                            <template #reference>
+                                <span class="a-link" :style="{ 'font-size': '14px'}">Didn't get mail code?</span>
+                            </template>
+                        </el-popover>
                     </el-form-item>
 
                     <el-form-item prop="nickName" v-if="opType == 0">
@@ -51,9 +60,8 @@
                     </el-form-item>
 
                     <el-form-item prop="registerPassword">
-                        <el-input :type="passwordEyeType.registerPasswordEyeOpen ? 'text' : 'password'"
-                        size="large" placeholder="please input your password"
-                            v-model="formData.registerPassword">
+                        <el-input :type="passwordEyeType.registerPasswordEyeOpen ? 'text' : 'password'" size="large"
+                            placeholder="please input your password" v-model="formData.registerPassword">
                             <template #prefix>
                                 <span class="iconfont icon-password"></span>
                             </template>
