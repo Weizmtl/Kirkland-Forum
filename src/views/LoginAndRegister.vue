@@ -7,7 +7,8 @@
 
                 <!--input-->
                 <el-form-item prop="email">
-                    <el-input size="large" clearable placeholder="please input your email" v-model="formData.email">
+                    <el-input size="large" clearable placeholder="please input your email" v-model="formData.email"
+                        maxLength="150">
                         <template #prefix>
                             <span class="iconfont icon-email"></span>
                         </template>
@@ -46,13 +47,14 @@
                                 <p>2,Add the email [5956882@qq.com] address to your whitelist</p>
                             </div>
                             <template #reference>
-                                <span class="a-link" :style="{ 'font-size': '14px'}">Didn't get mail code?</span>
+                                <span class="a-link" :style="{ 'font-size': '14px' }">Didn't get mail code?</span>
                             </template>
                         </el-popover>
                     </el-form-item>
 
                     <el-form-item prop="nickName" v-if="opType == 0">
-                        <el-input size="large" clearable placeholder="please input nickname" v-model="formData.nickName">
+                        <el-input size="large" clearable placeholder="please input nickname" v-model="formData.nickName"
+                            maxLength="20">
                             <template #prefix>
                                 <span class="iconfont icon-account"></span>
                             </template>
@@ -167,10 +169,27 @@ const dialogConfig = reactive({
     title: "Title",
 });
 
+const checkRePassword = (rule, value, callback) => {
+    if (value !== formData.value.registerPassword) {
+        callback(new Error(rule.message))
+    } else {
+        callback();
+    }
+};
 const formData = ref({});
 const formDataRef = ref();
 const rules = {
-    title: [{ required: true, message: "Please enter content" }],
+    email: [{ required: true, message: "Please input email" },
+    { validator: proxy.Verify.email, message: "Please enter a valid email address" },
+    ],
+    password: [{ required: true, message: "please input password" }],
+    emailCode: [{ required: true, message: "please input mail Code" }],
+    nickName: [{ required: true, message: "please input Nickname" }],
+    registerPassword: [{ required: true, message: "please input password" },
+    { validator: proxy.Verify.password, message: "1, password length 8-18, contain both letters and numbers."  },],
+    reRegisterPassword: [{ required: true, message: "please confirm your password" },
+    { validator: checkRePassword, message: "The passwords entered do not match" }],
+    checkCode: [{ required: true, message: "Please enter the image verification code" }],
 };
 
 // reset form

@@ -9,7 +9,9 @@ import 'element-plus/dist/index.css'
 import './assets/base.scss'
 import '@/assets/icon/iconfont.css'
 
-// golbal components
+//global methods
+import Verify from '@/utils/Verify'
+// global components
 import Dialog from "@/components/Dialog.vue"
 
 const app = createApp(App)
@@ -20,5 +22,6 @@ app.config.globalProperties.VueCookies = VueCookies;
 app.config.globalProperties.globalInfo = {
     bodyWidth: 1300,
 }
+app.config.globalProperties.Verify = Verify;
 app.component("Dialog", Dialog);
 app.mount('#app')
