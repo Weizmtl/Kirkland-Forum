@@ -23,9 +23,9 @@
                         </el-button>
                     </div>
                     <el-button-group :style="{ 'margin-left': '10px' }">
-                        <el-button type="primary" plain @click="LoginAndRegister(1)"
+                        <el-button type="primary" plain @click="loginAndRegister(1)"
                         >Login</el-button>
-                        <el-button type="primary" plain @click="LoginAndRegister(0)"
+                        <el-button type="primary" plain @click="loginAndRegister(0)"
                         >Register</el-button>
                     </el-button-group>
                 </div>
