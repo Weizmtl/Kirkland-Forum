@@ -43,3 +43,5 @@ completed the sign in and sign up button logic.
 
 May 9th
 Optimization of registration and login
+Get verification code and dialog for Verification
+Encapsulated message, difined message global method.
