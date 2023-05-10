@@ -33,7 +33,7 @@
                 <div v-if="opType == 0 || opType == 2">
                     <el-form-item prop="emailCode">
                         <div class="send-email-panel">
-                            <el-input size="large" clearable placeholder="input email verification code"
+                            <el-input size="large" placeholder="input email verification code"
                                 v-model="formData.emailCode">
                                 <template #prefix>
                                     <span class="iconfont icon-checkcode"></span>
@@ -91,7 +91,7 @@
 
                 <el-form-item prop="checkCode">
                     <div class="check-code-panel">
-                        <el-input size="large" clearable placeholder="Please input verification code"
+                        <el-input size="large" placeholder="Please input verification code"
                             v-model="formData.checkCode">
                             <template #prefix>
                                 <span class="iconfont icon-checkcode"></span>
@@ -305,6 +305,7 @@ const resetForm = () => {
     nextTick(() => {
         changeCheckCode(0);
         formDataRef.value.resetFields();
+        formData.value = {}
     });
 };
 
@@ -347,7 +348,11 @@ const doSubmit =()=>{
             proxy.Message.success("Register successfully, please login");
             showPanel(1);
         }else if(opType.value==1){
-
+            //Login
+        }else if(opType.value==2){
+            //reset Password
+            proxy.Message.success("Reset Password successfully, please login");
+            showPanel(1);
         }
     });
 };
