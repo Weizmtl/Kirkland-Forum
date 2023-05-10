@@ -7,7 +7,7 @@ const contentTypeJson = "application/json"
 
 const instance = axios.create({
     baseURL: "/api",
-    timeout: 10 * 1000,
+    timeout: 100 * 1000,
 })
 
 // Pre-request filter
@@ -51,8 +51,6 @@ instance.interceptors.response.use(
             }
             return Promise.reject({ showError: showError, msg: responseData.info });
         }
-
-
     }, (error) => {
         if (error.config.showLoading && loading) {
             loading.close();
@@ -64,9 +62,9 @@ instance.interceptors.response.use(
 const request = (config) => {
     const { url, params, dataType, showLoading = true, errorCallback, showError = true } = config
     let contentType = contentTypeForm;
-    let formData = new FormData();
+    let fromData = new FormData();
     for (let key in params) {
-        formData.append(key, params[key] == undefined ? "" : params[key]);
+        fromData.append(key, params[key] == undefined ? "" : params[key]);
     }
     if (dataType != null && dataType === "json") {
         contentType = contentTypeJson;
@@ -75,7 +73,7 @@ const request = (config) => {
         'Content-Type': contentType,
         'X-Requested-With': 'XMLHttpRequest',
     }
-    return instance.post(url, formData, {
+    return instance.post(url, fromData, {
         headers: headers,
         showLoading: showLoading,
         errorCallback: errorCallback,

@@ -199,18 +199,18 @@ const eyeChange = (type) => {
 // dialog of send email code
 const formData4SendMailCode = ref({});
 const formData4SendMailCodeRef = ref();
-
 const dialogConfig4SendMailCode = reactive({
-    show: false,
-    title: "Send email verification code",
-    buttons: [{
-        type: "primary",
-        text: "Send code",
-        click: () => {
-            sendEmailCode();
-        },
+  show: false,
+  title: "Send email verification code",
+  buttons: [
+    {
+      type: "primary",
+      text: "Send code",
+      click: () => {
+        sendEmailCode();
+      },
     },
-    ],
+  ],
 });
 
 const showSendEmailDialog = () => {
