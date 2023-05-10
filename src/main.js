@@ -12,6 +12,7 @@ import '@/assets/icon/iconfont.css'
 //global methods
 import Verify from '@/utils/Verify'
 import Message from '@/utils/Message'
+import Request from '@/utils/Request'
 // global components
 import Dialog from "@/components/Dialog.vue"
 
@@ -25,5 +26,6 @@ app.config.globalProperties.globalInfo = {
 }
 app.config.globalProperties.Verify = Verify;
 app.config.globalProperties.Message = Message;
+app.config.globalProperties.Request = Request;
 app.component("Dialog", Dialog);
 app.mount('#app')

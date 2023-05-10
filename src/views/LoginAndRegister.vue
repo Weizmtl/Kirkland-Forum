@@ -136,7 +136,7 @@
                 <!--input-->
                 <el-form-item label="Verification" prop="checkCode">
                     <div class="check-code-panel">
-                        <el-input size="large" clearable placeholder="Please input verification code"
+                        <el-input size="large"  placeholder="Please input verification code"
                             v-model="formData4SendMailCode.checkCode">
                             <template #prefix>
                                 <span class="iconfont icon-checkcode"></span>
@@ -159,6 +159,7 @@ const route = useRoute();
 
 const api = {
     checkCode: "/api/checkCode",
+    sendMailCode: "/sendEmailCode",
 };
 
 
@@ -231,13 +232,28 @@ const showSendEmailDialog = () => {
 
 //send email
 const sendEmailCode = () => {
-    formData4SendMailCodeRef.value.validate((valid) => {
-        if (!valid) {
-            return;
-        }
-        console.log("ssss")
+  formData4SendMailCodeRef.value.validate(async (valid) => {
+    if (!valid) {
+      return;
+    }
+    const params = Object.assign({}, formData4SendMailCode.value);
+    params.type = opType.value == 0 ? 0 : 1;
+    let result = await proxy.Request({
+      url: api.sendMailCode,
+      params: params,
+      errorCallback: () => {
+        changeCheckCode(1);
+      },
     });
+    if (!result) {
+      return;
+    }
+    proxy.Message.success("The verification code is sent successfully");
+    dialogConfig4SendMailCode.show = false;
+  });
 };
+
+
 
 //dialog of login and register config
 const dialogConfig = reactive({

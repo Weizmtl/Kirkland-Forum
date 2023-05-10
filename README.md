@@ -45,3 +45,7 @@ May 9th
 Optimization of registration and login
 Get verification code and dialog for Verification
 Encapsulated message, difined message global method.
+
+May 10th
+Create Message and Request JS file
+Preliminary completion of request verification code logic
