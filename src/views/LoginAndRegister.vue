@@ -39,7 +39,7 @@
                                     <span class="iconfont icon-checkcode"></span>
                                 </template>
                             </el-input>
-                            <el-button class="sent-mail-btn" type="primary" size="large" @click="showSendEmailDialog">Get
+                            <el-button class="sent-mail-btn" type="primary" size="large" @click="getEmailCode">Get
                                 code</el-button>
                         </div>
                         <el-popover placement="left" :width="450" trigger="click">
@@ -118,7 +118,11 @@
                 </el-form-item>
 
                 <el-form-item>
-                    <el-button type="primary" class="op-btn">Log in</el-button>
+                    <el-button type="primary" class="op-btn" @click="doSubmit">
+                        <span v-if="opType == 0">Sign up</span>
+                        <span v-if="opType == 1">Sign in</span>
+                        <span v-if="opType == 2">Reset Password</span>
+                    </el-button>
                 </el-form-item>
             </el-form>
         </Dialog>
@@ -136,7 +140,7 @@
                 <!--input-->
                 <el-form-item label="Verification" prop="checkCode">
                     <div class="check-code-panel">
-                        <el-input size="large"  placeholder="Please input verification code"
+                        <el-input size="large" placeholder="Please input verification code"
                             v-model="formData4SendMailCode.checkCode">
                             <template #prefix>
                                 <span class="iconfont icon-checkcode"></span>
@@ -160,6 +164,9 @@ const route = useRoute();
 const api = {
     checkCode: "/api/checkCode",
     sendMailCode: "/sendEmailCode",
+    register: "/register",
+    login: "/login",
+    resetPwd: "/resetPwd",
 };
 
 
@@ -200,20 +207,21 @@ const eyeChange = (type) => {
 const formData4SendMailCode = ref({});
 const formData4SendMailCodeRef = ref();
 const dialogConfig4SendMailCode = reactive({
-  show: false,
-  title: "Send email verification code",
-  buttons: [
-    {
-      type: "primary",
-      text: "Send code",
-      click: () => {
-        sendEmailCode();
-      },
-    },
-  ],
+    show: false,
+    title: "Send email verification code",
+    buttons: [
+        {
+            type: "primary",
+            text: "Send code",
+            click: () => {
+                sendEmailCode();
+            },
+        },
+    ],
 });
 
-const showSendEmailDialog = () => {
+//Get the email verification code
+const getEmailCode = () => {
     formDataRef.value.validateField("email", (valid) => {
         if (!valid) {
             return;
@@ -232,25 +240,25 @@ const showSendEmailDialog = () => {
 
 //send email
 const sendEmailCode = () => {
-  formData4SendMailCodeRef.value.validate(async (valid) => {
-    if (!valid) {
-      return;
-    }
-    const params = Object.assign({}, formData4SendMailCode.value);
-    params.type = opType.value == 0 ? 0 : 1;
-    let result = await proxy.Request({
-      url: api.sendMailCode,
-      params: params,
-      errorCallback: () => {
-        changeCheckCode(1);
-      },
+    formData4SendMailCodeRef.value.validate(async (valid) => {
+        if (!valid) {
+            return;
+        }
+        const params = Object.assign({}, formData4SendMailCode.value);
+        params.type = opType.value == 0 ? 0 : 1;
+        let result = await proxy.Request({
+            url: api.sendMailCode,
+            params: params,
+            errorCallback: () => {
+                changeCheckCode(1);
+            },
+        });
+        if (!result) {
+            return;
+        }
+        proxy.Message.success("The verification code is sent successfully");
+        dialogConfig4SendMailCode.show = false;
     });
-    if (!result) {
-      return;
-    }
-    proxy.Message.success("The verification code is sent successfully");
-    dialogConfig4SendMailCode.show = false;
-  });
 };
 
 
@@ -299,6 +307,52 @@ const resetForm = () => {
         formDataRef.value.resetFields();
     });
 };
+
+// submit table form
+const doSubmit =()=>{
+    formDataRef.value.validate(async (valid) => {
+    if (!valid) {
+      return;
+    }
+    let params = {};
+    Object.assign(params, formData.value);
+    //register
+    if (opType.value == 0 || opType.value == 2) {
+      params.password = params.registerPassword;
+      delete params.registerPassword;
+      delete params.reRegisterPassword;
+    }
+
+        let url = null;
+        if(opType.value==0){
+            url=api.register;
+        }else if(opType.value==1){
+            url=api.login;
+        }else if(opType.value==2){
+            url=api.resetPwd;
+        }
+        let result = await proxy.Request({
+            url:url,
+            params:params,
+            errorCallback:()=>{
+                changeCheckCode(0);
+            }
+        })
+
+        if(!result){
+            return;
+        }
+        //Register return
+        if(opType.value==0){
+            proxy.Message.success("Register successfully, please login");
+            showPanel(1);
+        }else if(opType.value==1){
+
+        }
+    });
+};
+
+
 </script>
 
 <style lang="scss">
