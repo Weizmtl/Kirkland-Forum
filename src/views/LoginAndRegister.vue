@@ -158,7 +158,7 @@
 <script setup>
 import {ref, reactive, getCurrentInstance, nextTick} from "vue";
 import {useRouter, useRoute} from "vue-router";
-
+import md5 from "js-md5";
 const {proxy} = getCurrentInstance();
 const router = useRouter();
 const route = useRoute();
@@ -305,7 +305,14 @@ const resetForm = () => {
     nextTick(() => {
         changeCheckCode(0);
         formDataRef.value.resetFields();
-        formData.value = {}
+        formData.value = {};
+
+        if (opType.value == 1) {
+            const cookieLoginInfo = proxy.VueCookies.get("loginInfo");
+            if (cookieLoginInfo){
+                formData.value = cookieLoginInfo
+            }
+        }
     });
 };
 
@@ -322,6 +329,14 @@ const doSubmit = () => {
             params.password = params.registerPassword;
             delete params.registerPassword;
             delete params.reRegisterPassword;
+        }
+        if(opType.value ==1){
+            let cookieLoginInfo = proxy.VueCookies.get("loginInfo");
+            let cookiePassword = cookieLoginInfo==null ? null : cookieLoginInfo.password;
+
+            if (params.password !== cookiePassword ){
+                params.password = md5(params.password);
+            }
         }
 
         let url = null;
@@ -349,6 +364,18 @@ const doSubmit = () => {
             showPanel(1);
         } else if (opType.value == 1) {
             //Login
+            if(params.rememberMe){
+                const loginInfo = {
+                    email:params.email,
+                    password:params.password,
+                    rememberMe:params.rememberMe,
+                };
+                proxy.VueCookies.set("loginInfo",loginInfo,"7d");
+            }else{
+                proxy.VueCookies.remove("loginInfo");
+            }
+            dialogConfig.show = false;
+            proxy.Message.success("Login successfully")
 
         } else if (opType.value == 2) {
             //reset Password
