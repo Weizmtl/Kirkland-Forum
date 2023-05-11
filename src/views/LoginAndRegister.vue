@@ -1,14 +1,14 @@
 <template>
     <div>
         <Dialog :show="dialogConfig.show" :title="dialogConfig.title" :buttons="dialogConfig.buttons" width="400px"
-            :showCancel="false" @close="dialogConfig.show = false">
+                :showCancel="false" @close="dialogConfig.show = false">
 
             <el-form class="login-register" :model="formData" :rules="rules" ref="formDataRef">
 
                 <!--input-->
                 <el-form-item prop="email">
                     <el-input size="large" clearable placeholder="please input your email" v-model="formData.email"
-                        maxLength="150">
+                              maxLength="150">
                         <template #prefix>
                             <span class="iconfont icon-email"></span>
                         </template>
@@ -18,13 +18,13 @@
                 <!--Login Password-->
                 <el-form-item prop="password" v-if="opType == 1">
                     <el-input :type="passwordEyeType.passwordEyeOpen ? 'text' : 'password'" size="large"
-                        placeholder="please input your password" v-model="formData.password">
+                              placeholder="please input your password" v-model="formData.password">
                         <template #prefix>
                             <span class="iconfont icon-password"></span>
                         </template>
                         <template #suffix>
                             <span @click="eyeChange('passwordEyeOpen')"
-                                :class="['iconfont', passwordEyeType.passwordEyeOpen ? 'icon-eye' : 'icon-close-eye']"></span>
+                                  :class="['iconfont', passwordEyeType.passwordEyeOpen ? 'icon-eye' : 'icon-close-eye']"></span>
                         </template>
                     </el-input>
                 </el-form-item>
@@ -34,13 +34,14 @@
                     <el-form-item prop="emailCode">
                         <div class="send-email-panel">
                             <el-input size="large" placeholder="input email verification code"
-                                v-model="formData.emailCode">
+                                      v-model="formData.emailCode">
                                 <template #prefix>
                                     <span class="iconfont icon-checkcode"></span>
                                 </template>
                             </el-input>
                             <el-button class="sent-mail-btn" type="primary" size="large" @click="getEmailCode">Get
-                                code</el-button>
+                                code
+                            </el-button>
                         </div>
                         <el-popover placement="left" :width="450" trigger="click">
                             <div>
@@ -55,7 +56,7 @@
 
                     <el-form-item prop="nickName" v-if="opType == 0">
                         <el-input size="large" clearable placeholder="please input nickname" v-model="formData.nickName"
-                            maxLength="20">
+                                  maxLength="20">
                             <template #prefix>
                                 <span class="iconfont icon-account"></span>
                             </template>
@@ -64,26 +65,26 @@
 
                     <el-form-item prop="registerPassword">
                         <el-input :type="passwordEyeType.registerPasswordEyeOpen ? 'text' : 'password'" size="large"
-                            placeholder="please input your password" v-model="formData.registerPassword">
+                                  placeholder="please input your password" v-model="formData.registerPassword">
                             <template #prefix>
                                 <span class="iconfont icon-password"></span>
                             </template>
                             <template #suffix>
                                 <span @click="eyeChange('registerPasswordEyeOpen')"
-                                    :class="['iconfont', passwordEyeType.registerPasswordEyeOpen ? 'icon-eye' : 'icon-close-eye']"></span>
+                                      :class="['iconfont', passwordEyeType.registerPasswordEyeOpen ? 'icon-eye' : 'icon-close-eye']"></span>
                             </template>
                         </el-input>
                     </el-form-item>
 
                     <el-form-item prop="reRegisterPassword">
                         <el-input :type="passwordEyeType.reRegisterPasswordEyeOpen ? 'text' : 'password'" size="large"
-                            placeholder="comfirm your password" v-model="formData.reRegisterPassword">
+                                  placeholder="comfirm your password" v-model="formData.reRegisterPassword">
                             <template #prefix>
                                 <span class="iconfont icon-password"></span>
                             </template>
                             <template #suffix>
                                 <span @click="eyeChange('reRegisterPasswordEyeOpen')"
-                                    :class="['iconfont', passwordEyeType.reRegisterPasswordEyeOpen ? 'icon-eye' : 'icon-close-eye']"></span>
+                                      :class="['iconfont', passwordEyeType.reRegisterPasswordEyeOpen ? 'icon-eye' : 'icon-close-eye']"></span>
                             </template>
                         </el-input>
                     </el-form-item>
@@ -92,12 +93,12 @@
                 <el-form-item prop="checkCode">
                     <div class="check-code-panel">
                         <el-input size="large" placeholder="Please input verification code"
-                            v-model="formData.checkCode">
+                                  v-model="formData.checkCode">
                             <template #prefix>
                                 <span class="iconfont icon-checkcode"></span>
                             </template>
                         </el-input>
-                        <img :src="checkCodeUrl" class="check-code" @click="changeCheckCode(0)" />
+                        <img :src="checkCodeUrl" class="check-code" @click="changeCheckCode(0)"/>
                     </div>
                 </el-form-item>
                 <el-form-item v-if="opType == 1">
@@ -129,8 +130,8 @@
 
         <!-- dialog of send email code  -->
         <Dialog :show="dialogConfig4SendMailCode.show" :title="dialogConfig4SendMailCode.title"
-            :buttons="dialogConfig4SendMailCode.buttons" width="500px" :showCancel="false"
-            @close="dialogConfig4SendMailCode.show = false">
+                :buttons="dialogConfig4SendMailCode.buttons" width="500px" :showCancel="false"
+                @close="dialogConfig4SendMailCode.show = false">
             <el-form :model="formData4SendMailCode" :rules="rules" ref="formData4SendMailCodeRef" label-width="100px">
 
                 <el-form-item label="Email">
@@ -141,12 +142,12 @@
                 <el-form-item label="Verification" prop="checkCode">
                     <div class="check-code-panel">
                         <el-input size="large" placeholder="Please input verification code"
-                            v-model="formData4SendMailCode.checkCode">
+                                  v-model="formData4SendMailCode.checkCode">
                             <template #prefix>
                                 <span class="iconfont icon-checkcode"></span>
                             </template>
                         </el-input>
-                        <img :src="checkCodeUrl4SendMailCode" class="check-code" @click="changeCheckCode(1)" />
+                        <img :src="checkCodeUrl4SendMailCode" class="check-code" @click="changeCheckCode(1)"/>
                     </div>
                 </el-form-item>
             </el-form>
@@ -155,9 +156,10 @@
 </template>
 
 <script setup>
-import { ref, reactive, getCurrentInstance, nextTick } from "vue";
-import { useRouter, useRoute } from "vue-router";
-const { proxy } = getCurrentInstance();
+import {ref, reactive, getCurrentInstance, nextTick} from "vue";
+import {useRouter, useRoute} from "vue-router";
+
+const {proxy} = getCurrentInstance();
 const router = useRouter();
 const route = useRoute();
 
@@ -170,7 +172,6 @@ const api = {
 };
 
 
-
 //0: register, 1: login, 2:reset password
 const opType = ref();
 
@@ -178,7 +179,7 @@ const showPanel = (type) => {
     opType.value = type;
     resetForm();
 };
-defineExpose({ showPanel });
+defineExpose({showPanel});
 
 //Verification
 const checkCodeUrl = ref(api.checkCode);
@@ -262,7 +263,6 @@ const sendEmailCode = () => {
 };
 
 
-
 //dialog of login and register config
 const dialogConfig = reactive({
     show: false,
@@ -279,17 +279,17 @@ const checkRePassword = (rule, value, callback) => {
 const formData = ref({});
 const formDataRef = ref();
 const rules = {
-    email: [{ required: true, message: "Please input email" },
-    { validator: proxy.Verify.email, message: "Please enter a valid email address" },
+    email: [{required: true, message: "Please input email"},
+        {validator: proxy.Verify.email, message: "Please enter a valid email address"},
     ],
-    password: [{ required: true, message: "please input password" }],
-    emailCode: [{ required: true, message: "please input mail Code" }],
-    nickName: [{ required: true, message: "please input Nickname" }],
-    registerPassword: [{ required: true, message: "please input password" },
-    { validator: proxy.Verify.password, message: "1, password length 8-18, contain both letters and numbers." },],
-    reRegisterPassword: [{ required: true, message: "please confirm your password" },
-    { validator: checkRePassword, message: "The passwords entered do not match" }],
-    checkCode: [{ required: true, message: "Please enter the image verification code" }],
+    password: [{required: true, message: "please input password"}],
+    emailCode: [{required: true, message: "please input mail Code"}],
+    nickName: [{required: true, message: "please input Nickname"}],
+    registerPassword: [{required: true, message: "please input password"},
+        {validator: proxy.Verify.password, message: "1, password length 8-18, contain both letters and numbers."},],
+    reRegisterPassword: [{required: true, message: "please confirm your password"},
+        {validator: checkRePassword, message: "The passwords entered do not match"}],
+    checkCode: [{required: true, message: "Please enter the image verification code"}],
 };
 
 // reset form
@@ -310,46 +310,47 @@ const resetForm = () => {
 };
 
 // submit table form
-const doSubmit =()=>{
+const doSubmit = () => {
     formDataRef.value.validate(async (valid) => {
-    if (!valid) {
-      return;
-    }
-    let params = {};
-    Object.assign(params, formData.value);
-    //register
-    if (opType.value == 0 || opType.value == 2) {
-      params.password = params.registerPassword;
-      delete params.registerPassword;
-      delete params.reRegisterPassword;
-    }
+        if (!valid) {
+            return;
+        }
+        let params = {};
+        Object.assign(params, formData.value);
+        //register
+        if (opType.value == 0 || opType.value == 2) {
+            params.password = params.registerPassword;
+            delete params.registerPassword;
+            delete params.reRegisterPassword;
+        }
 
         let url = null;
-        if(opType.value==0){
-            url=api.register;
-        }else if(opType.value==1){
-            url=api.login;
-        }else if(opType.value==2){
-            url=api.resetPwd;
+        if (opType.value == 0) {
+            url = api.register;
+        } else if (opType.value == 1) {
+            url = api.login;
+        } else if (opType.value == 2) {
+            url = api.resetPwd;
         }
         let result = await proxy.Request({
-            url:url,
-            params:params,
-            errorCallback:()=>{
+            url: url,
+            params: params,
+            errorCallback: () => {
                 changeCheckCode(0);
             }
         })
 
-        if(!result){
+        if (!result) {
             return;
         }
         //Register return
-        if(opType.value==0){
+        if (opType.value == 0) {
             proxy.Message.success("Register successfully, please login");
             showPanel(1);
-        }else if(opType.value==1){
+        } else if (opType.value == 1) {
             //Login
-        }else if(opType.value==2){
+
+        } else if (opType.value == 2) {
             //reset Password
             proxy.Message.success("Reset Password successfully, please login");
             showPanel(1);
@@ -362,37 +363,37 @@ const doSubmit =()=>{
 
 <style lang="scss">
 .login-register {
-    .send-email-panel {
-        display: flex;
-        width: 100%;
-        justify-content: space-between;
+  .send-email-panel {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
 
-        .sent-mail-btn {
-            margin-left: 5px;
-        }
+    .sent-mail-btn {
+      margin-left: 5px;
     }
+  }
 
-    .rememberme-panel {
-        width: 100%;
-    }
+  .rememberme-panel {
+    width: 100%;
+  }
 
-    .no-account {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-    }
+  .no-account {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
 
-    .op-btn {
-        width: 100%;
-    }
+  .op-btn {
+    width: 100%;
+  }
 }
 
 .check-code-panel {
-    display: flex;
+  display: flex;
 
-    .check-code {
-        margin-left: 5px;
-        cursor: pointer;
-    }
+  .check-code {
+    margin-left: 5px;
+    cursor: pointer;
+  }
 }
 </style>
