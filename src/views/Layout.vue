@@ -22,17 +22,36 @@
                             Search<span class="= iconfont icon-search"></span>
                         </el-button>
                     </div>
-                    <el-button-group :style="{ 'margin-left': '10px' }">
-                        <el-button type="primary" plain @click="loginAndRegister(1)"
-                        >Login</el-button>
-                        <el-button type="primary" plain @click="loginAndRegister(0)"
-                        >Register</el-button>
-                    </el-button-group>
+                    <div class="user-info">
+                        <el-dropdown>
+                            <el-badge :value="12" class="item">
+                                <div class="iconfont icon-message"></div>
+                            </el-badge>
+
+                            <template #dropdown>
+                                <el-dropdown-menu>
+                                    <el-dropdown-item>Reply me</el-dropdown-item>
+                                    <el-dropdown-item>Like me</el-dropdown-item>
+                                    <el-dropdown-item>Download mine</el-dropdown-item>
+                                    <el-dropdown-item>Like my comment</el-dropdown-item>
+                                    <el-dropdown-item>System Message</el-dropdown-item>
+
+                                </el-dropdown-menu>
+                            </template>
+                        </el-dropdown>
+                    </div>
+
+                    <!--                    <el-button-group :style="{ 'margin-left': '10px' }">
+                                            <el-button type="primary" plain @click="loginAndRegister(1)"
+                                            >Login</el-button>
+                                            <el-button type="primary" plain @click="loginAndRegister(0)"
+                                            >Register</el-button>
+                                        </el-button-group>-->
                 </div>
             </div>
         </div>
         <div>
-            <router-view />
+            <router-view/>
         </div>
         <!-- login and register -->
         <LoginAndRegister ref="loginRegisterRef"></LoginAndRegister>
@@ -41,9 +60,10 @@
 
 <script setup>
 import LoginAndRegister from "./LoginAndRegister.vue";
-import { ref, reactive, getCurrentInstance, onMounted } from "vue";
-import { useRouter, useRoute } from "vue-router";
-const { proxy } = getCurrentInstance();
+import {ref, reactive, getCurrentInstance, onMounted} from "vue";
+import {useRouter, useRoute} from "vue-router";
+
+const {proxy} = getCurrentInstance();
 const router = useRouter();
 const route = useRoute();
 
@@ -115,8 +135,8 @@ const initScroll = () => {
 
 //login and register
 const loginRegisterRef = ref();
-const loginAndRegister = (type) =>{
-loginRegisterRef.value.showPanel(type);
+const loginAndRegister = (type) => {
+    loginRegisterRef.value.showPanel(type);
 };
 
 onMounted(() => {
@@ -126,45 +146,54 @@ onMounted(() => {
 
 <style lang="scss">
 .header {
-    width: 100%;
-    position: fixed;
-    box-shadow: 0 2px 6px 0 #ddd;
+  width: 100%;
+  position: fixed;
+  box-shadow: 0 2px 6px 0 #ddd;
 
-    .header-content {
-        margin: 0px auto;
-        align-items: center;
-        height: 60px;
-        display: flex;
-        align-items: center;
+  .header-content {
+    margin: 0px auto;
+    align-items: center;
+    height: 60px;
+    display: flex;
+    align-items: center;
 
-        .logo {
-            display: block;
-            text-decoration: none;
-            margin-right: 5px;
+    .logo {
+      display: block;
+      text-decoration: none;
+      margin-right: 5px;
 
-            span {
-                font-size: 35px;
-            }
-        }
-
-        .menu-panel {
-            flex: 1;
-        }
-
-        .user-info-panel {
-            width: 345px;
-            display: flex;
-
-            .op-btn {
-                .iconfont {
-                    margin-left: 5px;
-                }
-
-                .el-button+.el-button {
-                    margin-left: 5px;
-                }
-            }
-        }
+      span {
+        font-size: 35px;
+      }
     }
+
+    .menu-panel {
+      flex: 1;
+    }
+
+    .user-info-panel {
+      width: 345px;
+      display: flex;
+      align-items: center;
+
+      .op-btn {
+        .iconfont {
+          margin-left: 5px;
+        }
+
+        .el-button + .el-button {
+          margin-left: 5px;
+        }
+      }
+
+      .user-info {
+        .icon-message {
+          font-size: 20px;
+          color: rgb(147, 147, 147);
+            margin-left: 5px;
+        }
+      }
+    }
+  }
 }
 </style>
