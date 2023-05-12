@@ -159,9 +159,12 @@
 import {ref, reactive, getCurrentInstance, nextTick} from "vue";
 import {useRouter, useRoute} from "vue-router";
 import md5 from "js-md5";
+import {useStore} from "vuex";
+
 const {proxy} = getCurrentInstance();
 const router = useRouter();
 const route = useRoute();
+const store = useStore();
 
 const api = {
     checkCode: "/api/checkCode",
@@ -375,8 +378,8 @@ const doSubmit = () => {
                 proxy.VueCookies.remove("loginInfo");
             }
             dialogConfig.show = false;
-            proxy.Message.success("Login successfully")
-
+            proxy.Message.success("Login successfully");
+            store.commit("updateLoginUserInfo",result.data);
         } else if (opType.value == 2) {
             //reset Password
             proxy.Message.success("Reset Password successfully, please login");

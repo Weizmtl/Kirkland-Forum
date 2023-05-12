@@ -46,4 +46,7 @@ const goToUcenter = () => {
 </script>
 
 <style lang="scss">
+.avatar{
+    cursor: pointer;
+}
 </style>

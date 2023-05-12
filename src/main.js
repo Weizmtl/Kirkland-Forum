@@ -8,6 +8,7 @@ import 'element-plus/dist/index.css'
 
 import './assets/base.scss'
 import '@/assets/icon/iconfont.css'
+import  store from './store'
 
 //global methods
 import Verify from '@/utils/Verify'
@@ -20,6 +21,7 @@ import Avatar from "@/components/Avatar.vue"
 const app = createApp(App)
 
 app.use(router)
+app.use(store)
 app.use(ElementPlus);
 app.config.globalProperties.VueCookies = VueCookies;
 app.config.globalProperties.globalInfo = {

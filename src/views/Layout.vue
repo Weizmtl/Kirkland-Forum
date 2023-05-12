@@ -9,9 +9,8 @@
                 </router-link>
                 <!-- subsection panel -->
                 <div class="menu-panel">
-
-
                 </div>
+
                 <!-- login and register panel -->
                 <div class="user-info-panel">
                     <div class="op-btn">
@@ -22,42 +21,49 @@
                             Search<span class="= iconfont icon-search"></span>
                         </el-button>
                     </div>
-                    <div class="message-info">
-                        <el-dropdown>
-                            <el-badge :value="12" class="item">
-                                <div class="iconfont icon-message"></div>
-                            </el-badge>
 
-                            <template #dropdown>
-                                <el-dropdown-menu>
-                                    <el-dropdown-item>Reply me</el-dropdown-item>
-                                    <el-dropdown-item>Like me</el-dropdown-item>
-                                    <el-dropdown-item>Download mine</el-dropdown-item>
-                                    <el-dropdown-item>Like my comment</el-dropdown-item>
-                                    <el-dropdown-item>System Message</el-dropdown-item>
-                                </el-dropdown-menu>
-                            </template>
-                        </el-dropdown>
-                    </div>
+                    <!--display user Info-->
+                    <template v-if ="userInfo.userId">
+                        <div class="message-info">
+                            <el-dropdown>
+                                <el-badge :value="12" class="item">
+                                    <div class="iconfont icon-message"></div>
+                                </el-badge>
+                                <template #dropdown>
+                                    <el-dropdown-menu>
+                                        <el-dropdown-item>Reply me</el-dropdown-item>
+                                        <el-dropdown-item>Like me</el-dropdown-item>
+                                        <el-dropdown-item>Download mine</el-dropdown-item>
+                                        <el-dropdown-item>Like my comment</el-dropdown-item>
+                                        <el-dropdown-item>System Message</el-dropdown-item>
+                                    </el-dropdown-menu>
+                                </template>
+                            </el-dropdown>
+                        </div>
 
-                    <div class="user-info">
-                        <el-dropdown>
-                            <avatar userId="7437465925" :width="50"></avatar>
-                            <template #dropdown>
-                                <el-dropdown-menu>
-                                    <el-dropdown-item>My Page</el-dropdown-item>
-                                    <el-dropdown-item>Logout</el-dropdown-item>
-                                </el-dropdown-menu>
-                            </template>
-                        </el-dropdown>
-                    </div>
+                        <div class="user-info">
+                            <el-dropdown>
+                                <avatar :userId="userInfo.userId" :width="50"></avatar>
+                                <template #dropdown>
+                                    <el-dropdown-menu>
+                                        <el-dropdown-item>My Page</el-dropdown-item>
+                                        <el-dropdown-item>Logout</el-dropdown-item>
+                                    </el-dropdown-menu>
+                                </template>
+                            </el-dropdown>
+                        </div>
 
-                    <!--                    <el-button-group :style="{ 'margin-left': '10px' }">
-                                            <el-button type="primary" plain @click="loginAndRegister(1)"
-                                            >Login</el-button>
-                                            <el-button type="primary" plain @click="loginAndRegister(0)"
-                                            >Register</el-button>
-                                        </el-button-group>-->
+                    </template>
+
+
+                    <el-button-group :style="{ 'margin-left': '10px' }" v-else>
+                        <el-button type="primary" plain @click="loginAndRegister(1)"
+                        >Login
+                        </el-button>
+                        <el-button type="primary" plain @click="loginAndRegister(0)"
+                        >Register
+                        </el-button>
+                    </el-button-group>
                 </div>
             </div>
         </div>
@@ -71,13 +77,18 @@
 
 <script setup>
 import LoginAndRegister from "./LoginAndRegister.vue";
-import {ref, reactive, getCurrentInstance, onMounted} from "vue";
+import {ref, reactive, getCurrentInstance, onMounted, watch} from "vue";
 import {useRouter, useRoute} from "vue-router";
-import Avatar from "@/components/Avatar.vue";
+import {useStore} from "vuex";
 
 const {proxy} = getCurrentInstance();
 const router = useRouter();
 const route = useRoute();
+const store = useStore();
+
+const api={
+    getUserInfo:"/getUserInfo",
+}
 
 const logoInfo = ref([
     {
@@ -154,7 +165,34 @@ const loginAndRegister = (type) => {
 
 onMounted(() => {
     initScroll();
+    getUserInfo();
 });
+
+//get user info
+const getUserInfo = async () => {
+    let result = await proxy.Request({
+        url:api.getUserInfo,
+    });
+    if(!result){
+        return;
+    }
+    store.commit("updateLoginUserInfo",result.data);
+}
+
+//Listens for login user info.
+const userInfo = ref({});
+watch(
+    () => store.state.loginUserInfo,
+    (newVal, oldVal) => {
+        if (newVal != undefined && newVal != null) {
+            userInfo.value = newVal;
+        } else {
+            userInfo.value = {};
+        }
+    },
+    {immediate: true, deep: true}
+);
+
 </script>
 
 <style lang="scss">
@@ -198,16 +236,16 @@ onMounted(() => {
           margin-left: 5px;
         }
       }
-        .message-info {
-            .icon-message {
-                font-size: 20px;
-                color: rgb(147, 147, 147);
-            }
-            margin-left: 5px;
-            margin-right: 25px;
-        }
-      .user-info {
 
+      .message-info {
+        .icon-message {
+          font-size: 20px;
+          color: rgb(147, 147, 147);
+        }
+
+        margin-left: 5px;
+        margin-right: 25px;
+        cursor: pointer;
       }
     }
   }
