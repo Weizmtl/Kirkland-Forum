@@ -22,7 +22,7 @@
                             Search<span class="= iconfont icon-search"></span>
                         </el-button>
                     </div>
-                    <div class="user-info">
+                    <div class="message-info">
                         <el-dropdown>
                             <el-badge :value="12" class="item">
                                 <div class="iconfont icon-message"></div>
@@ -35,7 +35,18 @@
                                     <el-dropdown-item>Download mine</el-dropdown-item>
                                     <el-dropdown-item>Like my comment</el-dropdown-item>
                                     <el-dropdown-item>System Message</el-dropdown-item>
+                                </el-dropdown-menu>
+                            </template>
+                        </el-dropdown>
+                    </div>
 
+                    <div class="user-info">
+                        <el-dropdown>
+                            <avatar userId="7437465925" :width="50"></avatar>
+                            <template #dropdown>
+                                <el-dropdown-menu>
+                                    <el-dropdown-item>My Page</el-dropdown-item>
+                                    <el-dropdown-item>Logout</el-dropdown-item>
                                 </el-dropdown-menu>
                             </template>
                         </el-dropdown>
@@ -62,6 +73,7 @@
 import LoginAndRegister from "./LoginAndRegister.vue";
 import {ref, reactive, getCurrentInstance, onMounted} from "vue";
 import {useRouter, useRoute} from "vue-router";
+import Avatar from "@/components/Avatar.vue";
 
 const {proxy} = getCurrentInstance();
 const router = useRouter();
@@ -115,6 +127,7 @@ const getScrollTop = () => {
 
 const initScroll = () => {
     let initScrollTop = getScrollTop();
+    let scrollType = 0;
     window.addEventListener("scroll", () => {
         let currentScrollTop = getScrollTop();
         if (currentScrollTop > initScrollTop) {
@@ -185,13 +198,16 @@ onMounted(() => {
           margin-left: 5px;
         }
       }
-
-      .user-info {
-        .icon-message {
-          font-size: 20px;
-          color: rgb(147, 147, 147);
+        .message-info {
+            .icon-message {
+                font-size: 20px;
+                color: rgb(147, 147, 147);
+            }
             margin-left: 5px;
+            margin-right: 25px;
         }
+      .user-info {
+
       }
     }
   }

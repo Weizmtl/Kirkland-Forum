@@ -24,7 +24,7 @@ app.use(ElementPlus);
 app.config.globalProperties.VueCookies = VueCookies;
 app.config.globalProperties.globalInfo = {
     bodyWidth: 1300,
-    avatarUrl:"/file/getAvatar/"
+    avatarUrl:"/api/file/getAvatar/"
 }
 app.config.globalProperties.Verify = Verify;
 app.config.globalProperties.Message = Message;
